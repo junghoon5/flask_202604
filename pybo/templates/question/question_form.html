@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- 질문 등록   -->
+    <div class="container">
+        <h5 class="my-3 border-bottom pb-2">질문 등록</h5>
+        <form action="{{ url_for('question.create') }}" method="post" novalidate>
+            {{ form.csrf_token }}
+            <!--오류표시 Start-->
+            {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for field, errors in form.errors.items() %}
+                <strong>{{ form[field].label }}</strong>
+                <ul>
+                    {% for error in errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <!--오류표시 End-->
+            {{ form.subject.label }}  <!--<label for="">제목</label>-->
+            {{ form.subject(class="form-control") }}      <!--<input type="text">-->
+
+            {{ form.content.label }}  <!--<label for=""></label>-->
+            {{ form.content(class="form-control") }}      <!--<textarea></textarea>-->
+            <button type="submit" class="btn btn-primary mt-3" >등록하기</button>
+        </form>
+
+    </div>
+{% endblock %}
