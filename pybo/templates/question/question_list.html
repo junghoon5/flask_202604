@@ -16,13 +16,17 @@
         </thead>
         <tbody>
         {% if question_list %}
-        {% for question in question_list %}
+        {% for question in question_list.items %}  <!--현재 페이지 해당 게시물-->
+
         <tr>
-            <td>{{ loop.index }}</td>
+            <td>{{ question_list.total - (question_list.page - 1) * question_list.per_page - loop.index0 }}</td>
             <td>
                 <a href="{{ url_for('question.detail', question_id=question.id) }}">{{ question.subject }}</a>
+                {% if question.answer_set|length > 0 %}
+                <span class="text-danger small mx-1">[{{ question.answer_set | length }}]</span>
+                {% endif %}
             </td>
-            <td>{{ question.created }}</td>
+            <td>{{ question.created | datetime }}</td>
         </tr>
         {% endfor %}
         {% else %}
@@ -32,6 +36,41 @@
         {% endif %}
         </tbody>
     </table>
+    <!--페이징 처리 Start-->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <!--이전버튼 처리-->
+            {% if question_list.has_prev %}
+            <li class="page-item"><a class="page-link" href="?page={{ question_list.prev_num }}">이전</a></li>
+            {% else %}
+            <li class="page-item"><a class="page-link" href="javascript:void(0)">이전</a>></li>
+            {% endif %}
+
+            <!--페이지 번호-->
+            {% for page_num in question_list.iter_pages() %}
+            {% if page_num %}
+            {% if page_num != question_list.page %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a></li>
+            {% else %}
+            <li class="page-item active"><a class="page-link" href="javascript:void(0)">{{ page_num }}</a></li>
+            {% endif %}
+            {% else %}
+            <li class="disabled"><a class="page-link" href="javascript:void(0)">...</a></li>
+            {% endif %}
+            {% endfor %}
+
+
+            <!--다음버튼 처리-->
+            {% if question_list.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ question_list.next_num }}">다음</a></li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">다음</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <!--페이징 처리 End-->
 </div>>
 {% endblock %}
 

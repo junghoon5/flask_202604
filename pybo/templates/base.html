@@ -13,10 +13,12 @@
 
 </head>
 <body>
-<!--기본 템플릿 안에 삽입할 내용 start-->
-{% block content %}
+    {% include 'navbar.html' %}
 
-{% endblock %}
+<!--기본 템플릿 안에 삽입할 내용 start-->
+    {% block content %}
+
+    {% endblock %}
 <!--기본 템플릿 안에 삽입할 내용 End-->
 
 <!--bootstrap js CDN-->
