@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h5 class="my-3 border-bottom pb-2">회원 가입</h5>
+    <form method="post" novalidate>
+        {{ form.csrf_token }}
+        {% include 'form_errors.html' %}
+
+        {{ form.username.lable }}
+        {{ form.username(class="form-control mb-3") }}
+
+        {{ form.password1.label }}
+        {{ form.password1(class="form-control mb-3") }}
+
+        {{ form.password2.label }}
+        {{ form.password2(class="form-control mb-3") }}
+
+        {{ form.email.label }}
+        {{ form.email(class="form-control mb-3") }}
+
+        <button type="submit" class="btn btn-primary my-3">저장하기</button>
+    </form>
+
+</div>
+{% endblock %}

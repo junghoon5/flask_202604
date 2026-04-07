@@ -18,11 +18,12 @@ def create_app():   # 애플리케이션 팩토리
     from . import models
 
     # 블루프린트 등록
-    from .views import main_views, question_views, answer_views
+    from .views import main_views, question_views, answer_views, auth_views
 
     app.register_blueprint(main_views.bp)
     app.register_blueprint(question_views.bp)
     app.register_blueprint(answer_views.bp)
+    app.register_blueprint(auth_views.bp)
 
     # 필터 등록
     from .filter import format_datetime
