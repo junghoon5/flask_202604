@@ -11,6 +11,7 @@
         <tr class="table-dark">
             <th>번호</th>
             <th>제목</th>
+            <th>글쓴이</th>
             <th>작성일시</th>
         </tr>
         </thead>
@@ -26,6 +27,7 @@
                 <span class="text-danger small mx-1">[{{ question.answer_set | length }}]</span>
                 {% endif %}
             </td>
+            <td>{{ question.user.username }}</td>
             <td>{{ question.created | datetime }}</td>
         </tr>
         {% endfor %}

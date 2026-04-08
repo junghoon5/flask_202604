@@ -6,7 +6,7 @@
         <form action="{{ url_for('question.create') }}" method="post" novalidate>
             {{ form.csrf_token }}
             <!--오류표시 Start-->
-            {{% include 'form_errors.html' %}}
+            {% include 'form_errors.html' %}
             <!--오류표시 End-->
             {{ form.subject.label }}  <!--<label for="">제목</label>-->
             {{ form.subject(class="form-control") }}      <!--<input type="text">-->
