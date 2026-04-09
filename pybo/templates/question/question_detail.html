@@ -2,15 +2,36 @@
 {% block content %}
     <div class="container my-3">
         <h2 class="border-bottom py-2">{{ question.subject }}</h2>
-
+        <!--flash 오류-->
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+        <!--질문 내용-->
         <div class="card my-3">
             <div class="card-body">
                 <div class="card-text" style="white-space: pre-line;">{{ question.content }}</div>
                 <div class="d-flex justify-content-end">
+                    {% if question.modify_date %}
+                <div class="badge bg-light text-dark p-2 text-start">
+                    <p class="mb-2">modified at</p>
+                    <p>{{ question.modify_date|datetime }}</p>
+                </div>
+                {% endif %}
+
+
+
                     <div class="badge bg-light text-dark p-2 text-start">
                     <p class="mb-2">{{ question.user.username }}</p>
                     <p>{{ question.created | datetime }}</p>
                     </div>
+                </div>
+                <div class="my-3">
+                    {% if g.user == question.user %}
+                    <a href="{{ url_for('question.modify', question_id=question.id) }}" class="btn btn-sm btn-outline-secondary">수정</a>
+                    <button class="delete btn btn-sm btn-outline-danger" data-uri="{{ url_for('question.delete', question_id=question.id) }}" >삭제</button>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -22,10 +43,27 @@
         <div class="card-body">
             <div class="card-text" style="white-space: pre-line;">{{ answer.content }}</div>
             <div class="d-flex justify-content-end">
+                {% if answer.modify_date %}
+                <div class="badge bg-light text-dark p-2 text-start">
+                    <p class="mb-2">modified at</p>
+                    <p>{{ answer.modify_date|datetime }}</p>
+                </div>
+                {% endif %}
+
+
+
                 <div class="badge bg-light text-dark p-2 text-start">
                     <p class="mb-2">{{ answer.user.username }}</p>
                     <p>{{ answer.created | datetime }}</p>
                 </div>
+            </div>
+            <div class="my-3">
+                {% if g.user == answer.user %}
+                <a href="{{ url_for('answer.modify', answer_id=answer.id) }}"
+                class="btn btn-sm btn-outline-secondary">수정</a>
+                <button class="delete btn btn-sm btn-outline-danger"
+                data-uri="{{ url_for('answer.delete', answer_id=answer.id) }}">삭제</button>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -59,4 +97,17 @@
         <input type="submit" value="답변등록" class="btn btn-primary" {% if not g.user %}disabled{% endif %}>
     </form>
 </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    const delete_btns = document.querySelectorAll('.delete');
+    delete_btns.forEach(function(btn){
+        btn.addEventListener('click', function(){
+            if(confirm('정말로 삭제 하시겠습니까?')){
+                location.href = this.dataset.uri;
+                }
+            })
+        })
+</script>
 {% endblock %}

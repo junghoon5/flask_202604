@@ -3,7 +3,7 @@
 <!-- 질문 등록   -->
     <div class="container">
         <h5 class="my-3 border-bottom pb-2">질문 등록</h5>
-        <form action="{{ url_for('question.create') }}" method="post" novalidate>
+        <form method="post" novalidate>
             {{ form.csrf_token }}
             <!--오류표시 Start-->
             {% include 'form_errors.html' %}

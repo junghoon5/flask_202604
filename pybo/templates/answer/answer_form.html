@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h5 class="my-3 border-bottom pb-2">답변 수정</h5>
+    <form method="post">
+        {{ form.csrf_token }}
+        {% include 'form_errors.html' %}
+
+        {{ form.content.label }}
+        {{ form.content(class="form-control mb-3", row="10") }}
+
+        <button type="submit" class="btn btn-primary">저장하기</button>
+    </form>
+</div>
+{% endblock %}

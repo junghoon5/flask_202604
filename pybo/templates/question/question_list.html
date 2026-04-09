@@ -3,9 +3,22 @@
 <!--    질문 목록-->
 
 <div class="container my-3">
-    <div class="d-flex justify-content-end mb-3">
-        <a href="{{ url_for('question.create') }}" class="btn btn-primary">질문 등록하기</a>
+    <div class="row my-3">
+        <div class="col-md-6">
+            <a href="{{ url_for('question.create') }}" class="btn btn-primary">질문 등록하기</a>
+        </div>
+        <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" id="search_kw" class="form-control"
+                    value="{{ kw or '' }}">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" id="btn_search">찾기</button>
+                </div>
+            </div>
+        </div>
     </div>
+
+
     <table class="table table-hover">
         <thead>
         <tr class="table-dark">
@@ -45,14 +58,14 @@
             {% if question_list.has_prev %}
             <li class="page-item"><a class="page-link" href="?page={{ question_list.prev_num }}">이전</a></li>
             {% else %}
-            <li class="page-item"><a class="page-link" href="javascript:void(0)">이전</a>></li>
+            <li class="page-item"><a class="page-link" href="javascript:void(0)">이전</a></li>
             {% endif %}
 
             <!--페이지 번호-->
             {% for page_num in question_list.iter_pages() %}
             {% if page_num %}
             {% if page_num != question_list.page %}
-            <li class="page-item"><a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a></li>
+            <li class="page-item"><a class="page-link" href="javascript:void(0)" data-page="{{ page_num }}">{{ page_num }}</a></li>
             {% else %}
             <li class="page-item active"><a class="page-link" href="javascript:void(0)">{{ page_num }}</a></li>
             {% endif %}
@@ -73,7 +86,35 @@
         </ul>
     </nav>
     <!--페이징 처리 End-->
-</div>>
+    <form id="searchForm" action="{{ url_for('question._list') }}" method="get">
+        <input type="hidden" id="kw" name="kw" value="{{ kw or ' ' }}">
+        <input type="hidden" id="page" name="page" value="{{ page }}">
+    </form>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+
+    const page_elements = document.querySelectorAll('.page-link');
+    page_elements.forEach(element => {
+        element.addEventListener('click', function(){
+            const page = this.dataset.page;
+            if (page){
+            document.getElementById('page').value = page;
+            document.getElementById('searchForm').submit();
+            };
+        });
+    });
+
+
+    const btn_search = document.getElementById('btn_search');
+    btn_search.addEventListener('click', function(){
+        document.getElementById('kw').value = document.getElementById('search_kw').value;
+        document.getElementById('page').value = 1;
+        document.getElementById('searchForm').submit();
+    });
+</script>
 {% endblock %}
 
 
